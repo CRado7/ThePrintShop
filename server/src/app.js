@@ -31,11 +31,11 @@ export function createApp() {
   const __dirname = path.dirname(__filename);
   const distPath = path.resolve(__dirname, "../../client/dist");
 
-  // Serve JS/CSS assets under /assets
-  app.use("/assets", express.static(path.join(distPath, "assets")));
+  // Replace the two static/sendFile blocks with this:
+  app.use(express.static(distPath));
 
-  // Serve index.html at root
-  app.get("/", (req, res) => {
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api")) return next();
     res.sendFile(path.join(distPath, "index.html"));
   });
 
