@@ -4,7 +4,7 @@ import path from "path";
 
 export default defineConfig({
   plugins: [react()],
-  base: "./",        // ensures correct paths for assets
+  base: "/assets/",        // ensures correct paths for assets
   build: {
     outDir: "dist"  // explicitly create dist folder
   },
