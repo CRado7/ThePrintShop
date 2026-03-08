@@ -4,6 +4,7 @@ import cors from "cors";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 dotenv.config();
 
@@ -39,6 +40,9 @@ export function createApp() {
 
   // Adjust this relative path depending on your repo structure
   const distPath = path.resolve(__dirname, "../../client/dist");
+
+  console.log("Serving static files from:", distPath);
+console.log("Does dist exist?", fs.existsSync(distPath));
 
   // Serve static files (JS, CSS, assets)
   app.use(express.static(distPath));
