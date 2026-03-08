@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5050";
+const API_BASE = import.meta.env.VITE_API_BASE ?? "";
 
 export async function apiGetBrands() {
   const res = await fetch(`${API_BASE}/api/catalog/brands?supplier=ss`);
