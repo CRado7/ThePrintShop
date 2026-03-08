@@ -4,7 +4,6 @@ import cors from "cors";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-import fs from "fs";
 
 dotenv.config();
 
@@ -39,14 +38,13 @@ export function createApp() {
   const __dirname = path.dirname(__filename);
   const distPath = path.resolve(__dirname, "../../client/dist");
 
-  // Debug logs to confirm on Render
-  console.log("Serving static files from:", distPath);
-  console.log("Does dist exist?", fs.existsSync(distPath));
-  console.log("dist contents:", fs.readdirSync(distPath));
-console.log("assets contents:", fs.readdirSync(path.join(distPath, "assets")));
-
+  // Serve static files from the build
   app.use(express.static(distPath));
 
+  // Explicitly serve /assets folder
+  app.use("/assets", express.static(path.join(distPath, "assets")));
+
+  // Fallback to index.html for all non-API routes
   app.get("*", (req, res, next) => {
     if (req.path.startsWith("/api")) return next();
     res.sendFile(path.join(distPath, "index.html"));
