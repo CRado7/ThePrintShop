@@ -42,6 +42,8 @@ export function createApp() {
   // Debug logs to confirm on Render
   console.log("Serving static files from:", distPath);
   console.log("Does dist exist?", fs.existsSync(distPath));
+  console.log("dist contents:", fs.readdirSync(distPath));
+console.log("assets contents:", fs.readdirSync(path.join(distPath, "assets")));
 
   app.use(express.static(distPath));
 
