@@ -1,11 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [react()],
-  base: "/",
+  base: "/",        // ensures correct paths for assets
   build: {
-    outDir: "dist", // ensure the output folder is "dist"
+    outDir: "dist"  // explicitly create dist folder
   },
   server: {
     proxy: {

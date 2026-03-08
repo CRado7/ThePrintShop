@@ -34,20 +34,17 @@ export function createApp() {
   app.use("/api/catalog", catalogRoutes);
   app.use("/api", quoteShareRoutes);
 
-  // --- React Build Serving (Production Safe) ---
+  // --- React Build Serving ---
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
-
-  // Adjust this relative path depending on your repo structure
   const distPath = path.resolve(__dirname, "../../client/dist");
 
+  // Debug logs to confirm on Render
   console.log("Serving static files from:", distPath);
-console.log("Does dist exist?", fs.existsSync(distPath));
+  console.log("Does dist exist?", fs.existsSync(distPath));
 
-  // Serve static files (JS, CSS, assets)
   app.use(express.static(distPath));
 
-  // Fallback to index.html for all non-API routes
   app.get("*", (req, res, next) => {
     if (req.path.startsWith("/api")) return next();
     res.sendFile(path.join(distPath, "index.html"));
