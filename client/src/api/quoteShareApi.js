@@ -1,5 +1,16 @@
 const API_BASE = import.meta.env.VITE_API_BASE ?? "";
 
+export async function apiSendQuoteEmail(quote, { toEmail, subject, message }) {
+  const res = await fetch(`${API_BASE}/api/quote/${quote.id}/send-email`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ quote, toEmail, subject, message }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || "Failed to send email");
+  return data;
+}
+
 export async function apiGetSharedQuote(token) {
   const res = await fetch(`${API_BASE}/api/quote-share/${token}`);
   const data = await res.json();

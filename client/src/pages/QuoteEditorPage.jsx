@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button, Card, Col, Form, Row, Badge } from "react-bootstrap";
 
 import { useQuoteStore } from "../store/quoteStore.js";
+import { apiSendQuoteEmail } from "../api/quoteShareApi.js";
 import QuoteLineItem from "../components/QuoteLineItem.jsx";
 import SendQuoteModal from "../components/SendQuoteModal.jsx";
 import { getQuoteTotalsAdjusted } from "../utils/quotePricing.js";
@@ -184,16 +185,7 @@ export default function QuoteEditorPage() {
                   onHide={() => setShowSendModal(false)}
                   quote={quote}
                   onSend={async ({ toEmail, subject, message }) => {
-                    const res = await fetch(
-                      `http://localhost:5050/api/quote/${quote.id}/send-email`,
-                      {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ quote, toEmail, subject, message }),
-                      }
-                    );
-                    const data = await res.json();
-                    if (!res.ok) throw new Error(data.error || "Failed to send email");
+                    const data = await apiSendQuoteEmail(quote, { toEmail, subject, message });
 
                     // ✅ Only update status to pending on send
                     updateQuote(quote.id, {
