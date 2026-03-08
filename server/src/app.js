@@ -38,13 +38,10 @@ export function createApp() {
   const __dirname = path.dirname(__filename);
   const distPath = path.resolve(__dirname, "../../client/dist");
 
-  // Serve static files from the build
-  app.use(express.static(distPath));
+  // --- Serve the entire dist folder ---
+  app.use("/", express.static(distPath));
 
-  // Explicitly serve /assets folder
-  app.use("/assets", express.static(path.join(distPath, "assets")));
-
-  // Fallback to index.html for all non-API routes
+  // --- Fallback for SPA routes ---
   app.get("*", (req, res, next) => {
     if (req.path.startsWith("/api")) return next();
     res.sendFile(path.join(distPath, "index.html"));
@@ -52,7 +49,7 @@ export function createApp() {
 
   // --- Error Handler ---
   app.use((err, req, res, next) => {
-    console.error(err);
+    console.error("Express error:", err);
     res.status(500).json({ error: err?.message || "Server error" });
   });
 
